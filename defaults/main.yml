@@ -1,0 +1,23 @@
+---
+semaphore_admin_user: admin
+semaphore_admin_email: "{{ semaphore_admin_user }}@{{ semaphore_fqdn }}"
+semaphore_admin_password: changeme20!
+semaphore_database_name: semaphore
+semaphore_database_user: semaphore
+semaphore_database_password: s3maphor3!
+semaphore_env_additional: []
+semaphore_expose: true
+semaphore_fqdn: "{{ ansible_fqdn }}"
+semaphore_image: semaphoreui/semaphore
+semaphore_ldap: false
+semaphore_ldap_host: dc.example.com
+semaphore_ldap_port: 636
+semaphore_ldap_needtls: true
+semaphore_ldap_dn_bind: uid=bind_user,cn=users,dc=example,dc=com
+semaphore_ldap_password: account!password
+semaphore_ldap_dn_search: dc=example,dc=com
+semaphore_ldap_search_filter: "(&(objectClass=inetOrgPerson)(uid=%s))"
+semaphore_name: "semaphore_{{ ansible_hostname }}"
+semaphore_port: 80
+semaphore_seed: "{{ ansible_machine_id[0:32] }}"
+semaphore_version: v2.8.92

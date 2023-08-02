@@ -1,0 +1,39 @@
+---
+- name: Ensure database container is installed and configured
+  ansible.builtin.include_role:
+    name: dcjulian29.postgres
+  vars:
+    postgres_database_name: "{{ semaphore_database_name }}"
+    postgres_database_user: "{{ semaphore_database_user }}"
+    postgres_database_password: "{{ semaphore_database_password }}"
+    postgres_server_port: 5432
+    postgres_server_version: "14"
+
+- name: Pull specified Semaphore docker image
+  community.docker.docker_image:
+    name: "{{ semaphore_image }}"
+    source: pull
+    tag: "{{ semaphore_version }}"
+  notify: Remove Semaphore
+
+- name: Ensure all handlers run before continuing
+  ansible.builtin.meta: flush_handlers
+
+- name: Build environment variables for container
+  ansible.builtin.set_fact:
+    semaphore_env: "{{ (semaphore_env | combine(item.env)) if item.apply else semaphore_env }}"
+  loop: "{{ semaphore_config }}"
+
+- name: Ensure Semaphore container is created
+  community.docker.docker_container:
+    container_default_behavior: no_defaults
+    detach: true
+    env: "{{ semaphore_env }}"
+    image: "{{ semaphore_image }}:{{ semaphore_version }}"
+    interactive: false
+    name: "{{ semaphore_name }}"
+    ports: "{{ ((semaphore_port | string) + ':3000') if semaphore_expose else '[]' }}"
+    pull: false
+    restart_policy: always
+    state: present
+  notify: Restart Semaphore

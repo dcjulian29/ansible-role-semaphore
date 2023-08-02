@@ -1,0 +1,6 @@
+---
+roles:
+  - name: dcjulian29.docker
+    src: https://github.com/dcjulian29/ansible-role-docker.git
+  - name: dcjulian29.postgres
+    src: https://github.com/dcjulian29/ansible-role-postgres.git

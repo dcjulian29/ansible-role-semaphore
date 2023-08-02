@@ -1,0 +1,31 @@
+---
+semaphore_config:
+  - env: "{{ semaphore_env_base }}"
+    apply: true
+  - env: "{{ semaphore_env_ldap }}"
+    apply: "{{ semaphore_ldap }}"
+  - env: "{{ semaphore_env_additional }}"
+    apply: "{{ semaphore_env_additional | length > 0 }}"
+semaphore_env: { }
+semaphore_env_base:
+  TZ: "{{ ansible_date_time.tz }}"
+  SEMAPHORE_DB_USER: "{{ semaphore_database_user }}"
+  SEMAPHORE_DB_PASS: "{{ semaphore_database_password }}"
+  SEMAPHORE_DB_HOST: "{{ ansible_default_ipv4.address }}"
+  SEMAPHORE_DB_PORT: "{{ '5432' | string | quote }}"
+  SEMAPHORE_DB_DIALECT: postgres
+  SEMAPHORE_DB: "{{ semaphore_database_name }}"
+  SEMAPHORE_ADMIN_PASSWORD: "{{ semaphore_admin_password }}"
+  SEMAPHORE_ADMIN_NAME: "{{ semaphore_admin_user }}"
+  SEMAPHORE_ADMIN_EMAIL: "{{ semaphore_admin_email }}"
+  SEMAPHORE_ADMIN: "{{ semaphore_admin_user }}"
+  SEMAPHORE_ACCESS_KEY_ENCRYPTION: "{{ semaphore_seed[0:32] | b64encode }}"
+semaphore_env_ldap:
+  SEMAPHORE_LDAP_ACTIVATED: "yes"
+  SEMAPHORE_LDAP_HOST: "{{ semaphore_ldap_host }}"
+  SEMAPHORE_LDAP_PORT: "{{ semaphore_ldap_port | string | quote }}"
+  SEMAPHORE_LDAP_NEEDTLS: "{{ 'yes' if semaphore_ldap_needtls else 'no' }}"
+  SEMAPHORE_LDAP_DN_BIND: "{{ semaphore_ldap_dn_bind }}"
+  SEMAPHORE_LDAP_PASSWORD: "{{ semaphore_ldap_password }}"
+  SEMAPHORE_LDAP_DN_SEARCH: "{{ semaphore_ldap_dn_search }}"
+  SEMAPHORE_LDAP_SEARCH_FILTER: "{{ semaphore_ldap_search_filter }}"
