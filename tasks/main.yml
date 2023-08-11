@@ -31,6 +31,7 @@
     env: "{{ semaphore_env }}"
     image: "{{ semaphore_image }}:{{ semaphore_version }}"
     interactive: false
+    labels: "{{ semaphore_labels | default(omit) }}"
     name: "{{ semaphore_name }}"
     ports: "{{ ((semaphore_port | string) + ':3000') if semaphore_expose else '[]' }}"
     pull: false
