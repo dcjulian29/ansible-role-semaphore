@@ -21,4 +21,4 @@ semaphore_ldap_search_filter: "(&(objectClass=inetOrgPerson)(uid=%s))"
 semaphore_name: "semaphore_{{ ansible_hostname }}"
 semaphore_port: 80
 semaphore_seed: "{{ ansible_machine_id[0:32] }}"
-semaphore_version: v2.8.92
+semaphore_version: v2.15.0
